@@ -97,6 +97,7 @@ scale = 2^(q_bits - 1) - 1; % 127
 b_q = round(b * scale);         % Quantization
 b_q = max(min(b_q, 127), -128); % Saturation
 
+% Expected output: -1, -1, 1, 13, 32, 41, 32, 13, 1, -1, -1
 disp('Quantized coefficients (8-bit signed integers):');
 fprintf('%d ', b_q(1));
 fprintf(', %d', b_q(2:end));
