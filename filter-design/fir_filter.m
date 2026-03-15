@@ -122,7 +122,9 @@ b_q = round(b * scale);         % Quantization
 b_q = max(min(b_q, 127), -128); % Saturation
 
 disp('Quantized coefficients (8-bit signed integers):');
-disp(b_q');
+fprintf('%d ', b_q(1));
+fprintf(', %d', b_q(2:end));
+fprintf('\n');
 
 %% Frequency response of the quantized FIR filter
 figure;
@@ -160,6 +162,6 @@ ylabel('Amplitude');
 grid on;
 
 %% Save filtered ECG signals to text files
-writematrix(ecg1_f, '/MATLAB Drive/ecg/output_ecg1_filtered.txt');
-writematrix(ecg2_f, '/MATLAB Drive/ecg/output_ecg2_filtered.txt');
-writematrix(ecg3_f, '/MATLAB Drive/ecg/output_ecg3_filtered.txt');
+writematrix(ecg1_f, '/MATLAB Drive/ecg/output_baseline_shifted_ecg.txt');
+writematrix(ecg2_f, '/MATLAB Drive/ecg/output_high_variability_ecg.txt');
+writematrix(ecg3_f, '/MATLAB Drive/ecg/output_reference_ecg.txt');
