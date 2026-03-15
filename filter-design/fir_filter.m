@@ -126,7 +126,12 @@ for k = 1:num_datasets
 end
 
 %% Save filtered ECG signals to text files
+outputs_dir = fullfile(base_dir, 'outputs');
+if ~exist(outputs_dir, 'dir')
+	mkdir(outputs_dir);
+end
+
 for k = 1:num_datasets
-	output_path = fullfile(base_dir, datasets(k).output_file);
+	output_path = fullfile(outputs_dir, datasets(k).output_file);
 	writematrix(filtered_signals{k}, output_path);
 end
