@@ -1,0 +1,42 @@
+# macOS
+.DS_Store
+
+# Build artifacts (C)
+/filter-design/fir_filter
+*.o
+
+# Generated project outputs
+/generated/
+
+# VHDL / GHDL artifacts
+/rtl/vhdl/*.cf
+/rtl/vhdl/*.o
+/rtl/vhdl/tb_fir
+/rtl/vhdl/*.vcd
+/rtl/vhdl/*.ghw
+
+# Verilog / Icarus Verilog artifacts
+/rtl/verilog/*.o
+/rtl/verilog/*.out
+/rtl/verilog/*.vcd
+
+# LaTeX artifacts (docs)
+/docs/*.aux
+/docs/*.log
+/docs/*.out
+/docs/*.fls
+/docs/*.fdb_latexmk
+/docs/*.toc
+/docs/*.synctex.gz
+/docs/*.bbl
+/docs/*.blg
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# Others
+*.cf
+*.out
+*.vcd
