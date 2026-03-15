@@ -29,61 +29,37 @@ n = 10; % Order of the filter
 % Nyquist frequency = fs / 2 = 250 / 2 = 125 Hz
 Wn = fc / (fs / 2); % Normalized frequency
 
-%% Load ECG signals from text files.
-% Each file contains a different ECG signal with specific characteristics:
-% - input_baseline_shifted_ecg.txt: This signal has a baseline shift, which is a common artifact in ECG recordings.
-%                                   The baseline shift can be caused by various factors such as patient movement,
-%                                   electrode issues, or changes in skin impedance. It appears as a slow drift in
-%                                   the ECG signal, making it difficult to analyze the true cardiac activity.
-%                                   The FIR filter will help in removing the baseline shift and restoring the true
-%                                   ECG signal for accurate analysis.
-% - input_high_variability_ecg.txt: This signal exhibits high variability, which can be due to arrhythmias, noise,
-%                                   or other physiological factors. High variability in ECG signals can make it
-%                                   challenging to identify and analyze specific features such as the P wave,
-%                                   QRS complex, and T wave. The FIR filter will help in reducing the noise and
-%                                   artifacts while preserving the important features of the ECG signal.
-% - input_reference_ecg.txt: This is a standard ECG signal that contains only noise.
-%                            The FIR filter is used to remove this noise,
-%                            so the denoising effect can be evaluated clearly.
-ecg1 = load('/MATLAB Drive/ecg/inputs/input_baseline_shifted_ecg.txt');
-ecg2 = load('/MATLAB Drive/ecg/inputs/input_high_variability_ecg.txt');
-ecg3 = load('/MATLAB Drive/ecg/inputs/input_reference_ecg.txt');
+%% Dataset configuration
+% To add a new ECG in future, add one element here only.
+base_dir = '/MATLAB Drive/ecg';
+datasets = struct( ...
+	'title', {'Baseline Shifted ECG', 'High Variability ECG', 'Reference ECG'}, ...
+	'input_file', {'input_baseline_shifted_ecg.txt', 'input_high_variability_ecg.txt', 'input_reference_ecg.txt'}, ...
+	'output_file', {'output_baseline_shifted_ecg.txt', 'output_high_variability_ecg.txt', 'output_reference_ecg.txt'} ...
+);
 
-%% Time vectors for plotting
-% The time vectors are created based on the length of each ECG signal and the sampling frequency.
-% The time vector is calculated as follows:
-% t = (0:N - 1) / fs
-% where N is the number of samples in the ECG signal, and fs is the sampling frequency.
-% This creates a time vector that starts at 0 seconds and increments by 1/fs seconds
-% for each sample, allowing us to plot the ECG signals against time in seconds.
-t1 = (0:length(ecg1) - 1) / fs;
-t2 = (0:length(ecg2) - 1) / fs;
-t3 = (0:length(ecg3) - 1) / fs;
+num_datasets = numel(datasets);
+ecg_signals = cell(1, num_datasets);
+time_vectors = cell(1, num_datasets);
+
+%% Load ECG signals and build time vectors
+for k = 1:num_datasets
+	input_path = fullfile(base_dir, 'inputs', datasets(k).input_file);
+	ecg_signals{k} = load(input_path);
+	time_vectors{k} = (0:length(ecg_signals{k}) - 1) / fs;
+end
 
 %% Plot ECG inputs separately
-
 figure('Name', 'ECG Inputs - Separate', 'Position', [100 100 1200 800]);
 
-subplot(3, 1, 1);
-plot(t1, ecg1, 'LineWidth', 1);
-title('Baseline Shifted ECG');
-xlabel('Time [s]');
-ylabel('Amplitude');
-grid on;
-
-subplot(3, 1, 2);
-plot(t2, ecg2, 'LineWidth', 1);
-title('High Variability ECG');
-xlabel('Time [s]');
-ylabel('Amplitude');
-grid on;
-
-subplot(3, 1, 3);
-plot(t3, ecg3, 'LineWidth', 1);
-title('Reference ECG');
-xlabel('Time [s]');
-ylabel('Amplitude');
-grid on;
+for k = 1:num_datasets
+	subplot(num_datasets, 1, k);
+	plot(time_vectors{k}, ecg_signals{k}, 'LineWidth', 1);
+	title(datasets(k).title);
+	xlabel('Time [s]');
+	ylabel('Amplitude');
+	grid on;
+end
 
 %% FIR filter design using Hamming window
 % The fir1 function is used to design the FIR filter. It takes the order of the
@@ -132,36 +108,25 @@ freqz(b_q, 1, 1024, fs);
 title('Frequency Response of the Quantized FIR Filter');
 
 %% Application of the filter
-ecg1_f = filter(b_q, 1, ecg1);
-ecg2_f = filter(b_q, 1, ecg2);
-ecg3_f = filter(b_q, 1, ecg3);
+filtered_signals = cell(1, num_datasets);
+for k = 1:num_datasets
+	filtered_signals{k} = filter(b_q, 1, ecg_signals{k});
+end
 
 %% Plot filtered ECG signals separately
+figure('Name', 'Filtered ECG', 'Position', [200 200 1200 800]);
 
-figure('Name','Filtered ECG','Position',[200 200 1200 800]);
-
-subplot(3,1,1);
-plot(t1, ecg1_f);
-title('Filtered Baseline Shifted ECG quantized to 8-bit');
-xlabel('Time [s]');
-ylabel('Amplitude');
-grid on;
-
-subplot(3,1,2);
-plot(t2, ecg2_f);
-title('Filtered High Variability ECG quantized to 8-bit');
-xlabel('Time [s]');
-ylabel('Amplitude');
-grid on;
-
-subplot(3,1,3);
-plot(t3, ecg3_f);
-title('Filtered Reference ECG quantized to 8-bit');
-xlabel('Time [s]');
-ylabel('Amplitude');
-grid on;
+for k = 1:num_datasets
+	subplot(num_datasets, 1, k);
+	plot(time_vectors{k}, filtered_signals{k});
+	title(['Filtered ' datasets(k).title ' quantized to 8-bit']);
+	xlabel('Time [s]');
+	ylabel('Amplitude');
+	grid on;
+end
 
 %% Save filtered ECG signals to text files
-writematrix(ecg1_f, '/MATLAB Drive/ecg/output_baseline_shifted_ecg.txt');
-writematrix(ecg2_f, '/MATLAB Drive/ecg/output_high_variability_ecg.txt');
-writematrix(ecg3_f, '/MATLAB Drive/ecg/output_reference_ecg.txt');
+for k = 1:num_datasets
+	output_path = fullfile(base_dir, datasets(k).output_file);
+	writematrix(filtered_signals{k}, output_path);
+end
