@@ -1,19 +1,14 @@
-# ecg-fir-hdl
+<h1 align="center">
+    <br>
+    <img src=".github/imgs/ecg-fir-hdl.png" alt="ECG FIR Filter" width="500">
+    <br>
+    ElectroCardioGram FIR Filter in HDL
+    <br>
+</h1>
 
-
-
-## Workflow
-
-```mermaid
-flowchart LR
-	matlab[MATLAB] --> c[C]
-	c --> design[FIR Filter Design]
-	design --> hdl[HDL]
-	hdl --> vhdl[VHDL]
-	hdl --> verilog[Verilog]
-	vhdl --> sim[RTL Simulation]
-	verilog --> sim
-```
+![GitHub License](https://img.shields.io/github/license/AntonioBerna/ecg-fir-hdl)
+![GitHub Created At](https://img.shields.io/github/created-at/antonioberna/ecg-fir-hdl)
+![GitHub repo size](https://img.shields.io/github/repo-size/antonioberna/ecg-fir-hdl)
 
 ## Requirements
 
@@ -25,4 +20,6 @@ flowchart LR
 
 ## Usage
 
-...
+```bash
+# WIP
+```
