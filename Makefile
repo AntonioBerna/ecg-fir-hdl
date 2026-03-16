@@ -75,7 +75,6 @@ VERILOG_SRC         := fir_filter.v testbench.v
 
 PAPER_DIR           := docs
 PAPER_NAME          := paper
-IMG_DIR             := $(PAPER_DIR)/imgs
 
 
 .PHONY: all rtl-run vhdl verilog fir fir-run vhdl-run vhdl-surfer verilog-run verilog-surfer format format-verilog format-vhdl paper clean clean-pdf clean-imgs
@@ -145,9 +144,6 @@ clean:
 	cd $(VERILOG_DIR) && rm -f $(VERILOG_BIN) $(VERILOG_WAVE)
 	rm -rf $(GEN_DIR)
 	cd $(PAPER_DIR) && rm -f *.aux *.log *.out *.fls *.fdb_latexmk *.toc
-
-clean-imgs:
-	rm -rf $(IMG_DIR)
 
 clean-pdf:
 	rm -f $(PAPER_DIR)/$(PAPER_NAME).pdf
