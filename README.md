@@ -31,19 +31,22 @@ cd ecg-fir-hdl
 
 ### FIR Filter Design using MATLAB
 
-You can run the MATLAB script using MATLAB Online or locally if you have MATLAB installed. The script generates the FIR filter coefficients (impulse response) reported below:
+You can run the MATLAB script using MATLAB Online or locally if you have MATLAB installed.
+The script generates the FIR filter coefficients (impulse response) reported below:
 
 ```bash
 -1, -1, 1, 13, 32, 41, 32, 13, 1, -1, -1
 ```
 
 > [!NOTE]
-> The MATLAB script describe all the steps to design the FIR filter, including the choice of the window function and the cutoff frequencies, plotting the impulse response and the frequency response of the filter, and finally generating the coefficients. You can modify the script to design different FIR filters by changing the parameters such as the filter order, cutoff frequencies, and window type.
+> The MATLAB script describe all the steps to design the FIR filter, including the choice of the window function and the cutoff frequencies, plotting the impulse response and the frequency response of the filter, and finally generating the coefficients.
+> You can modify the script to design different FIR filters by changing the parameters such as the filter order, cutoff frequencies, and window type.
 > The generated coefficients are used in both the VHDL and Verilog implementations of the FIR filter.
 
 ### FIR Filter Design with Transposed Form in C
 
-After generating the coefficients, you can run the C program to implement the FIR filter using the transposed form. The program reads the input signal from a file, applies the FIR filter, and writes the output signal to another file. You can modify the input signal and test different scenarios.
+After generating the coefficients, you can run the C program to implement the FIR filter using the transposed form.
+The program reads the input ECG signal from a file, applies the FIR filter, and writes the filtered ECG signal to another file.
 
 ```bash
 # Compile the C program
