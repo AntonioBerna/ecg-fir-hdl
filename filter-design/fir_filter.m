@@ -18,10 +18,11 @@ fc = 40;  % Cutoff frequency (Hz)
 % For this design, I choose an order of 10 for the FIR filter, which provides
 % a good balance between filter performance and computational complexity.
 n = 10; % Order of the filter
+tap = n + 1; % Number of filter coefficients (taps)
 
-% The normalized frequency is calculated because
-% the fir1 function expects the cutoff frequency to be in the range [0, 1],
-% where 1 corresponds to the Nyquist frequency (fs / 2).
+% The normalized frequency is calculated because the fir1 function expects
+% the cutoff frequency to be in the range [0, 1], where 1 corresponds to
+% the Nyquist frequency (fs / 2).
 % In this case, Wn = 40 / (250 / 2) = 40 / 125 = 0.32, which means
 % the cutoff frequency is at 32% of the Nyquist frequency.
 % The Nyquist frequency is the highest frequency that can be accurately
@@ -66,9 +67,9 @@ end
 % filter (n), the normalized cutoff frequency (Wn), the filter type ('low' for low-pass),
 % and the window type (hamming in this case) as inputs. The output is a vector of
 % filter coefficients (b) that define the FIR filter.
-% The Hamming window use n + 1 coefficients because the order of the filter is defined
+% The Hamming window use tap because the order of the filter is defined
 % as the number of taps minus one, so for an order of 10, I need 11 coefficients to define the filter.
-b = fir1(n, Wn, 'low', hamming(n + 1));
+b = fir1(n, Wn, 'low', hamming(tap));
 disp('Impulses response coefficients (floating point):');
 disp(b');
 
