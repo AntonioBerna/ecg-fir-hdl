@@ -83,9 +83,9 @@ Following commands are available to generate all the outputs at once, including 
 make
 
 # Format and lint the HDL code
-make format # Both VHDL and Verilog
 make format-vhdl
 make format-verilog
+make format # Both VHDL and Verilog
 
 # Generate the paper PDF
 make paper
